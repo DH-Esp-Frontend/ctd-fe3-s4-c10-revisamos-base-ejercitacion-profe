@@ -31,11 +31,14 @@ const FAQS: NextPage<IProps> = ({ data }) => {
 };
 
 export async function getStaticProps() {
-  const response = await fetch("http://localhost:3004/faqs"); // DEPLOY AND CHANGE THIS
+  const response = await fetch(
+    "https://my-json-server.typicode.com/DH-Esp-Frontend/ctd-fe3-s2-c6-integracion-terminado/db"
+  );
+
   const data = await response.json();
 
   return {
-    props: { data },
+    props: { data: data.faqs },
   };
 }
 
