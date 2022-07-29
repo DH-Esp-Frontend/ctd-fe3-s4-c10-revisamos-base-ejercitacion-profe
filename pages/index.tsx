@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { defaultLocale, TEXTS_BY_LANGUAGE } from "../locale/constants";
 import styles from "../styles/Home.module.css";
 
 type User = {
@@ -22,6 +24,16 @@ export interface IProps {
 }
 
 const Home: NextPage<IProps> = ({ data: { results } }) => {
+  // Traemos la información del idioma utilizando useRouter()
+  const { locale } = useRouter();
+
+  // Accedemos a los textos del Header que tenemos en nuestra
+  // constante, usando el idioma como "key"
+  const { MAIN } =
+    TEXTS_BY_LANGUAGE[
+      (locale || defaultLocale) as keyof typeof TEXTS_BY_LANGUAGE
+    ];
+
   const renderResults = () =>
     results.map(
       ({
@@ -51,19 +63,17 @@ const Home: NextPage<IProps> = ({ data: { results } }) => {
     <div className={styles.container}>
       <Head>
         <title>RandomIn</title>
-        <meta
-          name="description"
-          content="Una web en donde podrás conectar con otras personas de forma rápida y sencilla"
-        />
+        {/* Asignamos el metatag dinámicamente utilizando
+            nuestra constante */}
+        <meta name="description" content={MAIN.DESCRIPTION} />
       </Head>
       <main className={styles.main}>
         <h1 className={styles.title}>
           Random<span className={styles.highlight}>In</span>
         </h1>
-
-        <p className={styles.description}>
-          Aqui podrás encontrar los últimos usuarios que se han unido a la red
-        </p>
+        {/* Asignamos el subtítulo dinámicamente utilizando
+            nuestra constante */}
+        <p className={styles.description}>{MAIN.SUBTITLE}</p>
 
         <div className={styles.grid}>{renderResults()}</div>
       </main>
